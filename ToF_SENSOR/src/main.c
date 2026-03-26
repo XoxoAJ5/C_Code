@@ -4,7 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#define I2C_Master_SCL_IO 22
+#define I2C_Master_SCL_IO 19
 #define I2C_Master_SDA_IO 21
 #define I2C_MASTER_NUM              0      
 #define I2C_MASTER_FREQ_HZ          100000  
@@ -12,19 +12,15 @@
 #define I2C_MASTER_RX_BUF_DISABLE   0
 
 static const char *TAG = "I2C_SCANNER";
-
 static esp_err_t i2c_master_init(void) {
     i2c_config_t conf = {
-
         .mode = I2C_MODE_MASTER,
         .sda_io_num = I2C_Master_SDA_IO,
         .scl_io_num = I2C_Master_SCL_IO,
         .sda_pullup_en = GPIO_PULLUP_ENABLE,
         .scl_pullup_en = GPIO_PULLUP_ENABLE,
         .master.clk_speed = I2C_MASTER_FREQ_HZ,
-
     };
-
     i2c_param_config(I2C_MASTER_NUM, &conf);
     return i2c_driver_install(I2C_MASTER_NUM, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 }
@@ -40,8 +36,7 @@ void i2c_scanner_task(void) {
         i2c_cmd_link_delete(cmd);
         if (ret == ESP_OK) {
         ESP_LOGI(TAG, "FOUND DEVICE AT ADDRESS: 0x%02X", i);
-    }
-
+        }
     }
 }
 
